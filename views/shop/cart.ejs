@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= pageTitle %>
+    </title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .card {
+            width: 50rem;
+            min-height: 10rem;
+            outline: 1px solid rgb(78, 78, 214);
+            margin: 1rem auto;
+            padding: 1rem;
+        }
+
+        .product-title {
+            font-size: 3.2rem;
+            text-align: center;
+        }
+
+        .product-qty,
+        .product-price {
+            text-align: center;
+            font-size: 2rem;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+        }
+    </style>
+
+</head>
+
+<body>
+    <%- include("../includes/nav") %>
+        <main>
+
+            <% if(products.length>0){ %>
+
+                <% products.forEach(item=>{ %>
+                    <div class="card">
+                        <h3 class="product-title">
+                            <%= item.product.title %>
+                        </h3>
+                        <p class="product-qty">Quantity:<%=item.qty %>
+                                <p class="product-price">Price:<%=item.product.price %>
+                                </p>
+
+                                <!-- Delete button here -->
+                                <form action="/delete-cart-item" method="post">
+                                    <input type="hidden" name="productID" value="<%=item.product.ID%>">
+                                    <button type="submit" class="btn">Delete</button>
+                                </form>
+
+                    </div>
+
+                    <%})%>
+                        <br>
+                        <br>
+                        <h1>Total Price:<%=totalPrice %>
+                        </h1>
+                        </ul>
+
+                        <%}else{%>
+                            <h1>No Products in Cart!!!</h1>
+                            <%}%>
+
+
+        </main>
+
+</body>
+
+</html>

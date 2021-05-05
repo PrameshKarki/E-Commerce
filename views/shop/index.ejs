@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= pageTitle %>
+    </title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <!-- Include navigation bar -->
+    <%- include('../includes/nav.ejs') %>
+        <main>
+            <% if(products.length>0){ %>
+                <section class="items-container">
+                    <% products.forEach((product)=>{ %>
+                        <div class="item">
+                            <h2 class="item-title">
+                                <%= product.title %>
+                            </h2>
+                            <div class="image-container">
+                                <img src="<%= product.imageURL %>" alt="image">
+                            </div>
+                            <p class="price">$ <%= product.price %>
+                            </p>
+                            <p class="desc">
+                                <%= product.description %>
+                            </p>
+                            <%- include("../includes/add-to-cart",{product:product}) %>
+                                <a href="/details/<%= product.ID %>" class="btn">Details</a>
+                        </div>
+                        <% }) %>
+                </section>
+                <% }else{ %>
+                    <h1>No Data!!!</h1>
+                    <% } %>
+        </main>
+</body>
+
+</html>

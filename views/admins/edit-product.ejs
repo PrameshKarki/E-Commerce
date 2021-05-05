@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= pageTitle %>
+    </title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/add-product.css">
+</head>
+
+<body>
+    <!-- Include navigation menu here -->
+    <%- include('../includes/nav.ejs') %>
+
+        <form action="/admin/<% if(editMode){ %>edit-product <%}else{%>submit <%}%>" method="POST"
+            name="Product-Add-Form">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" <%if(editMode){%>value="<%=product.title%>" <%}%> >
+
+                    <label for="price">Price:</label>
+                    <input type="text" id="price" name="price" <%if(editMode){%>value="<%=product.price%>" <%}%>>
+
+                            <label for="imageURL">Image URL:</label>
+                            <input type="text" name="imageURL" id="imageURL" <%if(editMode){%>value="
+                            <%=product.imageURL%>"<%}%>>
+
+                                    <label for="description">Description:</label>
+                                    <textarea name="description" id="description"
+                                        rows="10"><%if(editMode){%><%=product.description%><%}%></textarea>
+                                    <% if(editMode){ %>
+                                        <input type="hidden" name="ID" value="<%=product.ID%>">
+                                        <%}%>
+
+                                            <button class="btn" type="submit">
+                                                <% if(editMode){ %>
+                                                    Update Item
+                                                    <%} else{%>Add Item<% } %>
+                                            </button>
+        </form>
+
+</body>
+
+</html>

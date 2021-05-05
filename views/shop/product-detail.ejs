@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= pageTitle %>
+    </title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .centered {
+            text-align: center;
+            font-size: 2.2rem;
+        }
+    </style>
+
+</head>
+
+<body>
+    <%- include("../includes/nav") %>
+        <main class="centered">
+            <h2>
+                <%= product.title %>
+            </h2>
+            <hr>
+            <img src="<%= product.imageURL %>" alt="<%= product.title %>" height="200px" width:"100px"
+                style="border-radius: 10%;">
+            <p>
+                <%=product.price%>
+            </p>
+            <p>
+                <%=product.description%>
+            </p>
+            <%- include("../includes/add-to-cart.ejs") %>
+
+        </main>
+
+</body>
+
+</html>
