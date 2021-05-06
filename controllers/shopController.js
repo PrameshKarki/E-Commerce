@@ -1,87 +1,102 @@
 //Import product model
 const Product = require('../models/product');
 const Cart = require("../models/cart");
-const e = require('express');
+const Order = require("../models/order");
 
 const getProducts = (req, res, next) => {
-    Product.fetchAll(products => {
+    Product.fetchAll().then(([rows, fieldData]) => {
         res.render('shop/product-list', {
             pageTitle: "Products-webTRON Shop",
             path: "/products",
-            products: products
+            products: rows
         });
-    });
+    }).catch(err => console.log(err));
 
 
 }
 const getProduct = (req, res, next) => {
     const ID = +req.params.productID;
-    Product.fetchByID(ID, (product => {
+    Product.fetchByID(ID).then(([product]) => {
         res.render("shop/product-detail", {
             pageTitle: "Product Title-webTRON Shop",
             path: "/products",
-            product: product
+            product: product[0]
         })
-
-    }))
+    }).catch(err => {
+        console.log(err);
+    })
 
 }
 
 const getHome = (req, res, next) => {
-    Product.fetchAll(products => {
+    Product.fetchAll().then(([rows, fieldData]) => {
         res.render('shop/index', {
-            pageTitle: "Welcome-webTRON Shop",
+            pageTitle: "Welcome to webTRON Shop",
             path: "/",
-            products: products
+            products: rows
         });
-    });
+    }).catch(err => console.log(err));
 }
 
 const getCart = (req, res, next) => {
-    Cart.getCart((cart) => {
-        Product.fetchAll(products => {
-            const productsInCart = [];
-            if (cart.products)
-                for (element of products) {
-                    let selectedProduct;
-                    selectedProduct = cart.products.find(prod => element.ID === prod.ID);
-                    if (selectedProduct) {
-                        productsInCart.push({ product: element, qty: selectedProduct.qty });
-                    }
-                }
-            res.render('shop/cart', {
-                pageTitle: "Your Cart-webTRON Shop",
-                path: "/cart",
-                products: productsInCart,
-                totalPrice: cart.totalPrice
-            })
-
+    const userID = req.user.ID;
+    Cart.fetch(userID).then(([data]) => {
+        let totalPrice = 0;
+        data.forEach(element => totalPrice += element.quantity * element.price)
+        res.render('shop/cart', {
+            pageTitle: "Your Cart-webTRON Shop",
+            path: "/cart",
+            products: data,
+            totalPrice: totalPrice
         })
+    }).catch(err => {
+        console.log(err);
     })
 }
 
 const getOrders = (req, res, next) => {
-    res.render("shop/orders", {
-        pageTitle: "Your orders",
-        path: "/orders"
+    const userID = req.user.ID;
+    let totalPrice = 0;
+    Order.fetch(userID).then(([products]) => {
+        products.forEach(element => totalPrice += element.quantity * element.price);
+        res.render("shop/orders", {
+            pageTitle: "Your orders",
+            path: "/orders",
+            products: products,
+            totalPrice: totalPrice
+        })
+    }).catch(err => {
+        console.log(error);
     })
 }
 exports.postCart = (req, res, next) => {
     const id = +req.body.productID;
-    Product.fetchByID(id, (product) => {
-        Cart.addProduct(id, product.price);
+    const userID = req.user;
+    Cart.save(req.user.ID, id).then(() => {
+        res.redirect("/");
 
+    }).catch(err => {
+        console.log(err);
     })
-    res.redirect("/");
 }
 
 exports.postDeleteCartItem = (req, res, next) => {
     const productID = +req.body.productID;
-    Product.fetchByID(productID, (product) => {
+    const userID = req.user.ID;
+    Cart.removeProduct(userID, productID).then(() => {
+        res.redirect("/cart");
 
-        Cart.deleteProduct(productID, product.price);
+    }).catch(err => {
+        console.log(err);
     })
-    res.redirect("/cart");
+}
+
+exports.postOrderItems = (req, res, next) => {
+    const userID = req.user.ID;
+    Order.place(userID);
+    res.redirect("/orders");
+
+
 }
 
 module.exports.getProducts = getProducts;

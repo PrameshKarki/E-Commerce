@@ -8,6 +8,9 @@ const bodyParser = require('body-parser');
 const shopRoutes = require('./routes/shopRoute');
 const adminRoutes = require('./routes/adminRoute');
 
+//Import Models
+const User = require("./models/user");
+
 //Instantiate express app
 const app = express();
 
@@ -23,6 +26,19 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 //For serving static files
 app.use(express.static(path.join(__dirname, 'public')));
+
+//Set middleware
+app.use((req, res, next) => {
+    User.fetch(1).then(user => {
+        const fetchedUser = user[0];
+        req.user = fetchedUser[0];
+        next();
+    }).catch(err => {
+        console.log(err);
+    })
+
+})
+
 
 //Middleware for shop routes
 app.use(shopRoutes);

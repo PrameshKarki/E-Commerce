@@ -15,7 +15,7 @@ module.exports.getEditProduct = (req, res, next) => {
 
     } else {
         const productID = +req.params.productID;
-        Product.fetchByID(productID, (product) => {
+        Product.fetchByID(productID).then(([product]) => {
             if (!product) {
                 res.redirect('/');
             } else {
@@ -23,9 +23,12 @@ module.exports.getEditProduct = (req, res, next) => {
                     pageTitle: "Edit Product",
                     path: "/admin/edit-product",
                     editMode: true,
-                    product: product
+                    product: product[0]//For single element only
                 })
             }
+
+        }).catch(err => {
+            console.log(err);
         })
 
     }
@@ -39,41 +42,49 @@ module.exports.postEditProduct = (req, res, next) => {
     const updatedPrice = req.body.price;
     const updatedImageUrl = req.body.imageURL;
     const updatedDescription = req.body.description;
+    const updatedProduct = new Product(updatedTitle, updatedPrice, updatedDescription, updatedImageUrl);
 
-    const updatedProduct = new Product(ID, updatedTitle, updatedPrice, updatedDescription, updatedImageUrl);
-    Product.update(updatedProduct);
 
-    res.redirect("/admin/products");
+    Product.update(updatedProduct, ID).then(() => {
+        res.redirect("/admin/products");
+    }).catch((err) => {
+        console.log(err);
+    });
+
 }
 
 module.exports.postDeleteProduct = (req, res, next) => {
     let ID = +req.body.ID;
-    Product.deleteByID(ID);
-    res.redirect("/admin/products");
+    Product.deleteByID(ID).then(() => {
+        res.redirect("/admin/products");
+    }).catch(err => console.log(err));
 }
 
 const getProducts = (req, res, next) => {
-    Product.fetchAll(products => {
+    Product.fetchAll().then(([rows, fieldData]) => {
         res.render('admins/products', {
             pageTitle: "Products-webTRON Shop",
             path: "/admin/products",
-            products: products
+            products: rows
         });
-    });
+    }).catch(err => console.log(err));
 }
 
 const postSubmit = (req, res, next) => {
     let body = JSON.parse(JSON.stringify(req.body));
-    const ID = Math.random();
     const title = body.title;
     const price = body.price;
     const imageURL = body.imageURL;
     const description = body.description;
     //Instantiate new Product
-    const product = new Product(ID, title, price, description, imageURL);
+    const product = new Product(title, price, description, imageURL);
     //Save product
-    product.save();
-    res.redirect('/');
+    product.save().then(() => {
+        res.redirect('/');
+
+    }).catch(err => {
+        console.log(err);
+    });
 };
 
 module.exports.getAddProduct = getAddProduct;

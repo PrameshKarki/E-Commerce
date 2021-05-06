@@ -46,21 +46,25 @@
                 <% products.forEach(item=>{ %>
                     <div class="card">
                         <h3 class="product-title">
-                            <%= item.product.title %>
+                            <%= item.title %>
                         </h3>
-                        <p class="product-qty">Quantity:<%=item.qty %>
-                                <p class="product-price">Price:<%=item.product.price %>
+                        <p class="product-qty">Quantity:<%=item.quantity %>
+                                <p class="product-price">Price:<%=item.price %>
                                 </p>
 
                                 <!-- Delete button here -->
                                 <form action="/delete-cart-item" method="post">
-                                    <input type="hidden" name="productID" value="<%=item.product.ID%>">
+                                    <input type="hidden" name="productID" value="<%=item.ID%>">
                                     <button type="submit" class="btn">Delete</button>
                                 </form>
 
                     </div>
 
                     <%})%>
+                        <!-- Order Button Here -->
+                        <form action="/order-items" method="post">
+                            <button class="btn">Order Now</button>
+                        </form>
                         <br>
                         <br>
                         <h1>Total Price:<%=totalPrice %>

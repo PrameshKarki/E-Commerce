@@ -9,12 +9,38 @@
         <%= pageTitle %>
     </title>
     <link rel="stylesheet" href="/css/style.css">
+    <style>
+        h3{
+            font-size: 2.2rem;
+        }
+        pre {
+            font-size: 1.8rem;
+        }
+    </style>
 
 </head>
 
 <body>
     <%- include("../includes/nav") %>
-        <h1>This is Orders</h1>
+
+        <% if(products.length>0){ %>
+            <h1>Your orders:</h1>
+            <hr>
+            <% products.forEach(product=>{%>
+                <pre><%=product.title%>    <%=product.quantity%></pre>
+
+                <%})%>
+                    <h3>Total Price:<%=totalPrice%>
+                    </h3>
+
+
+                    <%}else{%>
+
+                        <h1>Don't have any orders!</h1>
+                        <%}%>
+
+
+
 
 </body>
 
