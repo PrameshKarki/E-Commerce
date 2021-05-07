@@ -14,8 +14,8 @@ module.exports.getEditProduct = (req, res, next) => {
         res.redirect('/');
 
     } else {
-        const productID = +req.params.productID;
-        Product.fetchByID(productID).then(([product]) => {
+        const productID = req.params.productID;
+        Product.fetchByID(productID).then(product => {
             if (!product) {
                 res.redirect('/');
             } else {
@@ -23,7 +23,7 @@ module.exports.getEditProduct = (req, res, next) => {
                     pageTitle: "Edit Product",
                     path: "/admin/edit-product",
                     editMode: true,
-                    product: product[0]//For single element only
+                    product: product //For single element only
                 })
             }
 
@@ -37,15 +37,13 @@ module.exports.getEditProduct = (req, res, next) => {
 }
 
 module.exports.postEditProduct = (req, res, next) => {
-    const ID = +req.body.ID;
+    const ID = req.body.ID;
     const updatedTitle = req.body.title;
     const updatedPrice = req.body.price;
     const updatedImageUrl = req.body.imageURL;
     const updatedDescription = req.body.description;
-    const updatedProduct = new Product(updatedTitle, updatedPrice, updatedDescription, updatedImageUrl);
-
-
-    Product.update(updatedProduct, ID).then(() => {
+    const updatedProduct = new Product(updatedTitle, updatedPrice, updatedDescription, updatedImageUrl, ID, req.user._id);
+    updatedProduct.save().then(() => {
         res.redirect("/admin/products");
     }).catch((err) => {
         console.log(err);
@@ -54,18 +52,18 @@ module.exports.postEditProduct = (req, res, next) => {
 }
 
 module.exports.postDeleteProduct = (req, res, next) => {
-    let ID = +req.body.ID;
+    let ID = req.body.ID;
     Product.deleteByID(ID).then(() => {
         res.redirect("/admin/products");
     }).catch(err => console.log(err));
 }
 
 const getProducts = (req, res, next) => {
-    Product.fetchAll().then(([rows, fieldData]) => {
+    Product.fetchAll().then((products) => {
         res.render('admins/products', {
             pageTitle: "Products-webTRON Shop",
             path: "/admin/products",
-            products: rows
+            products: products
         });
     }).catch(err => console.log(err));
 }
@@ -77,7 +75,7 @@ const postSubmit = (req, res, next) => {
     const imageURL = body.imageURL;
     const description = body.description;
     //Instantiate new Product
-    const product = new Product(title, price, description, imageURL);
+    const product = new Product(title, price, description, imageURL, null);
     //Save product
     product.save().then(() => {
         res.redirect('/');

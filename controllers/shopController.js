@@ -1,26 +1,25 @@
 //Import product model
 const Product = require('../models/product');
-const Cart = require("../models/cart");
 const Order = require("../models/order");
 
 const getProducts = (req, res, next) => {
-    Product.fetchAll().then(([rows, fieldData]) => {
+    Product.fetchAll().then((products) => {
         res.render('shop/product-list', {
             pageTitle: "Products-webTRON Shop",
             path: "/products",
-            products: rows
+            products: products
         });
     }).catch(err => console.log(err));
 
 
 }
 const getProduct = (req, res, next) => {
-    const ID = +req.params.productID;
-    Product.fetchByID(ID).then(([product]) => {
+    const ID = req.params.productID;
+    Product.fetchByID(ID).then(product => {
         res.render("shop/product-detail", {
             pageTitle: "Product Title-webTRON Shop",
             path: "/products",
-            product: product[0]
+            product: product
         })
     }).catch(err => {
         console.log(err);
@@ -29,18 +28,17 @@ const getProduct = (req, res, next) => {
 }
 
 const getHome = (req, res, next) => {
-    Product.fetchAll().then(([rows, fieldData]) => {
+    Product.fetchAll().then(products => {
         res.render('shop/index', {
             pageTitle: "Welcome to webTRON Shop",
             path: "/",
-            products: rows
+            products: products
         });
     }).catch(err => console.log(err));
 }
 
 const getCart = (req, res, next) => {
-    const userID = req.user.ID;
-    Cart.fetch(userID).then(([data]) => {
+    req.user.getCart().then(data => {
         let totalPrice = 0;
         data.forEach(element => totalPrice += element.quantity * element.price)
         res.render('shop/cart', {
@@ -55,35 +53,38 @@ const getCart = (req, res, next) => {
 }
 
 const getOrders = (req, res, next) => {
-    const userID = req.user.ID;
     let totalPrice = 0;
-    Order.fetch(userID).then(([products]) => {
-        products.forEach(element => totalPrice += element.quantity * element.price);
+    req.user.getOrders().then((data) => {
+        data.forEach(d => {
+            d.items.forEach(product => {
+                totalPrice += product.price * product.quantity;
+
+            })
+        })
         res.render("shop/orders", {
             pageTitle: "Your orders",
             path: "/orders",
-            products: products,
+            data: data,
             totalPrice: totalPrice
         })
-    }).catch(err => {
-        console.log(error);
-    })
-}
-exports.postCart = (req, res, next) => {
-    const id = +req.body.productID;
-    const userID = req.user;
-    Cart.save(req.user.ID, id).then(() => {
-        res.redirect("/");
-
     }).catch(err => {
         console.log(err);
     })
 }
+exports.postCart = (req, res, next) => {
+    const productID = req.body.productID;
+    req.user.addToCart(productID).then(data => {
+        res.redirect("/cart");
+    }).catch(err => {
+        console.log(err);
+    })
+
+
+}
 
 exports.postDeleteCartItem = (req, res, next) => {
-    const productID = +req.body.productID;
-    const userID = req.user.ID;
-    Cart.removeProduct(userID, productID).then(() => {
+    const productID = req.body.productID;
+    req.user.removeCartProduct(productID).then(() => {
         res.redirect("/cart");
 
     }).catch(err => {
@@ -92,9 +93,12 @@ exports.postDeleteCartItem = (req, res, next) => {
 }
 
 exports.postOrderItems = (req, res, next) => {
-    const userID = req.user.ID;
-    Order.place(userID);
-    res.redirect("/orders");
+    req.user.orderPlace().then(() => {
+        res.redirect("/orders");
+
+    }).catch(err => {
+        console.log(err);
+    });
 
 
 }

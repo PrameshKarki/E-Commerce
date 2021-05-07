@@ -10,9 +10,22 @@
     </title>
     <link rel="stylesheet" href="/css/style.css">
     <style>
-        h3{
-            font-size: 2.2rem;
+        * {
+            line-height: 1.4;
         }
+
+        h1 {
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+        }
+
         pre {
             font-size: 1.8rem;
         }
@@ -23,21 +36,29 @@
 <body>
     <%- include("../includes/nav") %>
 
-        <% if(products.length>0){ %>
+        <% if(data.length>0){ %>
             <h1>Your orders:</h1>
             <hr>
-            <% products.forEach(product=>{%>
-                <pre><%=product.title%>    <%=product.quantity%></pre>
+            <% data.forEach(d=>{%>
+                <h2>Order ID:<%=d._id %>
+                </h2>
+                <h3>Items:</h3>
 
-                <%})%>
-                    <h3>Total Price:<%=totalPrice%>
-                    </h3>
+                <%d.items.forEach(product=>{%>
+                    <pre><%=product.title%>    <%=product.quantity%></pre>
+                    <%})%>
+                        <br>
+                        <br>
+                        <hr>
+                        <%})%>
+                            <h1>Total Price:<%= totalPrice %>
+                            </h1>
 
 
-                    <%}else{%>
+                            <%}else{%>
 
-                        <h1>Don't have any orders!</h1>
-                        <%}%>
+                                <h1>Don't have any orders!</h1>
+                                <%}%>
 
 
 

@@ -31,7 +31,7 @@
                                 <%= product.description %>
                             </p>
                             <%- include("../includes/add-to-cart",{product:product}) %>
-                                <a href="/details/<%= product.ID %>" class="btn">Details</a>
+                                <a href="/details/<%= product._id %>" class="btn">Details</a>
                         </div>
                         <% }) %>
                 </section>

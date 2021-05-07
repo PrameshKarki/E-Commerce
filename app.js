@@ -8,6 +8,9 @@ const bodyParser = require('body-parser');
 const shopRoutes = require('./routes/shopRoute');
 const adminRoutes = require('./routes/adminRoute');
 
+//Import database
+const MongoConnect = require("./utils/database").MongoConnect;
+
 //Import Models
 const User = require("./models/user");
 
@@ -29,16 +32,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //Set middleware
 app.use((req, res, next) => {
-    User.fetch(1).then(user => {
-        const fetchedUser = user[0];
-        req.user = fetchedUser[0];
+    User.fetch("60952cd8a6c670c3c127246b").then(user => {
+        req.user = new User(user.name, user.email, user.cart, user._id);
         next();
     }).catch(err => {
         console.log(err);
     })
 
 })
-
 
 //Middleware for shop routes
 app.use(shopRoutes);
@@ -49,5 +50,9 @@ app.use('/admin', adminRoutes);
 app.use(errorController.get404);
 //Don't invoke function here
 
-//Run Server
-app.listen(3000);
+
+//Connect to mongoDB database
+MongoConnect(() => {
+    //Run Server
+    app.listen(3000);
+})

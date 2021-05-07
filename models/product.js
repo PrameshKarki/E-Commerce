@@ -1,35 +1,37 @@
 //Import database
-const db = require("../utils/database");
+const mongodb = require("mongodb");
 
-//Cart Model
-const Cart = require("./cart");
-
-
+const getDB = require("../utils/database").getDB;
 class Product {
-    constructor(title, price, description, imageURL) {
+    constructor(title, price, description, imageURL, id, userID) {
         this.title = title;
         this.price = price;
         this.imageURL = imageURL;
         this.description = description;
+        this._id = id ? new mongodb.ObjectId(id) : null;
+        this.userID = userID;
     }
     save() {
-        return db.execute("INSERT INTO products(title,price,imageURL,description) VALUES(?,?,?,?)", [this.title, this.price, this.imageURL, this.description]);
-
+        const db = getDB();//It returns database connection
+        if (!this._id)
+            return db.collection("products").insertOne(this);
+        else
+            return db.collection("products").updateOne({ _id: this._id }, { $set: this });
     }
     static fetchAll() {
-        return db.execute("SELECT * FROM products");
+        const db = getDB();
+        return db.collection("products").find().toArray();
 
     }
     static fetchByID(ID) {
-        return db.execute("SELECT * from products WHERE ID=?", [ID]);
+        const db = getDB();
+        return db.collection("products").find({ _id: new mongodb.ObjectId(ID) }).next();
 
     }
-    static update(obj, ID) {
-        return db.execute("UPDATE products SET title=?,price=?,imageURL=?,description=? WHERE ID=?", [obj.title, obj.price, obj.imageURL, obj.description, ID]);
 
-    }
     static deleteByID(ID) {
-        return db.execute("DELETE FROM products WHERE ID=?",[ID]);
+        const db = getDB();
+        return db.collection("products").deleteOne({ _id: new mongodb.ObjectId(ID) });
     }
 }
 

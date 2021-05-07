@@ -32,7 +32,7 @@
                                     <textarea name="description" id="description"
                                         rows="10"><%if(editMode){%><%=product.description%><%}%></textarea>
                                     <% if(editMode){ %>
-                                        <input type="hidden" name="ID" value="<%=product.ID%>">
+                                        <input type="hidden" name="ID" value="<%=product._id%>">
                                         <%}%>
 
                                             <button class="btn" type="submit">
