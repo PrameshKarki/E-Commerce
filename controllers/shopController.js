@@ -3,7 +3,7 @@ const Product = require('../models/product');
 const Order = require("../models/order");
 
 const getProducts = (req, res, next) => {
-    Product.fetchAll().then((products) => {
+    Product.find().then((products) => {
         res.render('shop/product-list', {
             pageTitle: "Products-webTRON Shop",
             path: "/products",
@@ -15,7 +15,7 @@ const getProducts = (req, res, next) => {
 }
 const getProduct = (req, res, next) => {
     const ID = req.params.productID;
-    Product.fetchByID(ID).then(product => {
+    Product.findById(ID).then(product => {
         res.render("shop/product-detail", {
             pageTitle: "Product Title-webTRON Shop",
             path: "/products",
@@ -28,7 +28,7 @@ const getProduct = (req, res, next) => {
 }
 
 const getHome = (req, res, next) => {
-    Product.fetchAll().then(products => {
+    Product.find().then(products => {
         res.render('shop/index', {
             pageTitle: "Welcome to webTRON Shop",
             path: "/",

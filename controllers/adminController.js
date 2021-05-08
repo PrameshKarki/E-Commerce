@@ -15,7 +15,7 @@ module.exports.getEditProduct = (req, res, next) => {
 
     } else {
         const productID = req.params.productID;
-        Product.fetchByID(productID).then(product => {
+        Product.findById(productID).then(product => {
             if (!product) {
                 res.redirect('/');
             } else {
@@ -42,8 +42,14 @@ module.exports.postEditProduct = (req, res, next) => {
     const updatedPrice = req.body.price;
     const updatedImageUrl = req.body.imageURL;
     const updatedDescription = req.body.description;
-    const updatedProduct = new Product(updatedTitle, updatedPrice, updatedDescription, updatedImageUrl, ID, req.user._id);
-    updatedProduct.save().then(() => {
+    Product.findById(ID).then((product) => {
+        product.title = updatedTitle;
+        product.price = updatedPrice;
+        product.description = updatedDescription;
+        product.imageURL = updatedImageUrl;
+        return product.save();
+    }).then(() => {
+
         res.redirect("/admin/products");
     }).catch((err) => {
         console.log(err);
@@ -53,13 +59,13 @@ module.exports.postEditProduct = (req, res, next) => {
 
 module.exports.postDeleteProduct = (req, res, next) => {
     let ID = req.body.ID;
-    Product.deleteByID(ID).then(() => {
+    Product.findByIdAndDelete(ID).then(() => {
         res.redirect("/admin/products");
     }).catch(err => console.log(err));
 }
 
 const getProducts = (req, res, next) => {
-    Product.fetchAll().then((products) => {
+    Product.find().then((products) => {
         res.render('admins/products', {
             pageTitle: "Products-webTRON Shop",
             path: "/admin/products",
@@ -72,10 +78,10 @@ const postSubmit = (req, res, next) => {
     let body = JSON.parse(JSON.stringify(req.body));
     const title = body.title;
     const price = body.price;
-    const imageURL = body.imageURL;
+    const imageUrl = body.imageURL;
     const description = body.description;
     //Instantiate new Product
-    const product = new Product(title, price, description, imageURL, null);
+    const product = new Product({ title: title, price: price, description: description, imageURL: imageUrl, userId: req.user._id });
     //Save product
     product.save().then(() => {
         res.redirect('/');

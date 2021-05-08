@@ -8,8 +8,8 @@ const bodyParser = require('body-parser');
 const shopRoutes = require('./routes/shopRoute');
 const adminRoutes = require('./routes/adminRoute');
 
-//Import database
-const MongoConnect = require("./utils/database").MongoConnect;
+//Import mongoose
+const mongoose = require("mongoose");
 
 //Import Models
 const User = require("./models/user");
@@ -32,8 +32,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //Set middleware
 app.use((req, res, next) => {
-    User.fetch("60952cd8a6c670c3c127246b").then(user => {
-        req.user = new User(user.name, user.email, user.cart, user._id);
+    User.findById("6096aaa30b24f5dd7a687f3c").then(user => {
+        req.user = user;
         next();
     }).catch(err => {
         console.log(err);
@@ -51,8 +51,15 @@ app.use(errorController.get404);
 //Don't invoke function here
 
 
-//Connect to mongoDB database
-MongoConnect(() => {
-    //Run Server
-    app.listen(3000);
+mongoose.connect("mongodb://localhost:27017/mongooseShop").then(() => {
+    User.findOne().then(user => {
+        if (!user) {
+            const user = new User({ name: "Pramesh Karki", email: "prameshkarki0407@gmail.com", cart: { items: [] } })
+            user.save();
+
+        }
+        app.listen(3000);
+    })
+}).catch(err => {
+    console.error(err);
 })
