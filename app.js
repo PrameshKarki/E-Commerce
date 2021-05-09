@@ -32,7 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //Set middleware
 app.use((req, res, next) => {
-    User.findById("6096aaa30b24f5dd7a687f3c").then(user => {
+    User.findById("609790feb5af9d9496b3a024").then(user => {
         req.user = user;
         next();
     }).catch(err => {

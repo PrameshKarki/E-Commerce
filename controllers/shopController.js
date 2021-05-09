@@ -1,6 +1,7 @@
 //Import product model
 const Product = require('../models/product');
 const Order = require("../models/order");
+const User = require("../models/user");
 
 const getProducts = (req, res, next) => {
     Product.find().then((products) => {
@@ -38,9 +39,10 @@ const getHome = (req, res, next) => {
 }
 
 const getCart = (req, res, next) => {
-    req.user.getCart().then(data => {
+    req.user.populate("cart.items.productID").execPopulate().then(user => {
+        const data = user.cart.items;
         let totalPrice = 0;
-        data.forEach(element => totalPrice += element.quantity * element.price)
+        data.forEach(element => totalPrice += element.quantity * element.productID.price)
         res.render('shop/cart', {
             pageTitle: "Your Cart-webTRON Shop",
             path: "/cart",
@@ -54,11 +56,10 @@ const getCart = (req, res, next) => {
 
 const getOrders = (req, res, next) => {
     let totalPrice = 0;
-    req.user.getOrders().then((data) => {
+    Order.find({ "userID": req.user._id }).then((data) => {
         data.forEach(d => {
-            d.items.forEach(product => {
-                totalPrice += product.price * product.quantity;
-
+            d.items.forEach(i => {
+                totalPrice += i.details.price * i.quantity;
             })
         })
         res.render("shop/orders", {
@@ -93,13 +94,10 @@ exports.postDeleteCartItem = (req, res, next) => {
 }
 
 exports.postOrderItems = (req, res, next) => {
-    req.user.orderPlace().then(() => {
+
+    req.user.orderPlace(() => {
         res.redirect("/orders");
-
-    }).catch(err => {
-        console.log(err);
-    });
-
+    })
 
 }
 

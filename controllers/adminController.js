@@ -60,7 +60,10 @@ module.exports.postEditProduct = (req, res, next) => {
 module.exports.postDeleteProduct = (req, res, next) => {
     let ID = req.body.ID;
     Product.findByIdAndDelete(ID).then(() => {
-        res.redirect("/admin/products");
+        //Remove from cart too
+        req.user.removeCartProduct(ID).then(() => {
+            res.redirect("/admin/products");
+        })
     }).catch(err => console.log(err));
 }
 
