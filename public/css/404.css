@@ -1,4 +1,6 @@
-h1{
-    font-size: 2rem;
-    color:red;
+.warning{
+    font-size: 3rem;
+    color: red;
+    text-align: center;
+    margin-top: 5rem;
 }

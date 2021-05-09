@@ -9,33 +9,30 @@
         <%= pageTitle %>
     </title>
     <link rel="stylesheet" href="/css/style.css">
-    <style>
-        .centered {
-            text-align: center;
-            font-size: 2.2rem;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/product-details.css">
 
 </head>
 
 <body>
     <%- include("../includes/nav") %>
-        <main class="centered">
-            <h2>
-                <%= product.title %>
-            </h2>
-            <hr>
-            <img src="<%= product.imageURL %>" alt="<%= product.title %>" height="200px" width:"100px"
-                style="border-radius: 10%;">
-            <p>
-                <%=product.price%>
+        <div class="product-details">
+            <p class="product-id">ID:<%=product._id%>
             </p>
-            <p>
+            <h2 class="product-title">
+                <%=product.title%>
+            </h2>
+            <div class="image-container">
+                <img src="<%=product.imageURL%>" alt="<%=product.tile%>">
+            </div>
+            <p class="product-price">$<%=product.price%>
+            </p>
+            <p class="product-description">
                 <%=product.description%>
             </p>
             <%- include("../includes/add-to-cart.ejs") %>
-
-        </main>
+        </div>
+        <%- include("../includes/footer.ejs") %>
 
 </body>
 

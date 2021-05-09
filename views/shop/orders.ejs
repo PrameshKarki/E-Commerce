@@ -1,68 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= pageTitle %></title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/order.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
+  </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <%= pageTitle %>
-    </title>
-    <link rel="stylesheet" href="/css/style.css">
-    <style>
-        * {
-            line-height: 1.4;
-        }
+  <body>
+    <%- include("../includes/nav") %> <% if(data.length>0){ %> <%
+    data.forEach(d=>{%>
+    <div class="ordered-items">
+      <h3>ID:<%=d._id %></h3>
+      <%d.items.forEach(product=>{%>
+      <div class="items">
+        <p><%=product.details.title%></p>
+        <p>Qty:<%=product.quantity%></p>
+      </div>
 
-        h1 {
-            font-size: 2rem;
-        }
+      <%})%>
+    </div>
+    <%})%> 
+    <h1 class="centered">Total Price:<%=totalPrice%></h1>
+    <%}else{%>
 
-        h2 {
-            font-size: 1.8rem;
-        }
-
-        h3 {
-            font-size: 1.5rem;
-        }
-
-        pre {
-            font-size: 1.8rem;
-        }
-    </style>
-
-</head>
-
-<body>
-    <%- include("../includes/nav") %>
-
-        <% if(data.length>0){ %>
-            <h1>Your orders:</h1>
-            <hr>
-            <% data.forEach(d=>{%>
-                <h2>Order ID:<%=d._id %>
-                </h2>
-                <h3>Items:</h3>
-
-                <%d.items.forEach(product=>{%>
-                    <pre><%=product.details.title%>    <%=product.quantity%></pre>
-                    <%})%>
-                        <br>
-                        <br>
-                        <hr>
-                        <%})%>
-                            <h1>Total Price:<%= totalPrice %>
-                            </h1>
-
-
-                            <%}else{%>
-
-                                <h1>Don't have any orders!</h1>
-                                <%}%>
-
-
-
-
-</body>
-
+    <h1>Don't have any orders!</h1>
+    <%}%> <%- include("../includes/footer.ejs") %>
+  </body>
 </html>

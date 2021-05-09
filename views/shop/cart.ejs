@@ -9,74 +9,49 @@
         <%= pageTitle %>
     </title>
     <link rel="stylesheet" href="/css/style.css">
-    <style>
-        .card {
-            width: 50rem;
-            min-height: 10rem;
-            outline: 1px solid rgb(78, 78, 214);
-            margin: 1rem auto;
-            padding: 1rem;
-        }
-
-        .product-title {
-            font-size: 3.2rem;
-            text-align: center;
-        }
-
-        .product-qty,
-        .product-price {
-            text-align: center;
-            font-size: 2rem;
-        }
-
-        h1 {
-            text-align: center;
-            font-size: 2.5rem;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/cart.css">
 
 </head>
 
 <body>
     <%- include("../includes/nav") %>
         <main>
-
             <% if(products.length>0){ %>
-
                 <% products.forEach(item=>{ %>
-                    <div class="card">
-                        <h3 class="product-title">
-                            <%= item.productID.title %>
-                        </h3>
-                        <p class="product-qty">Quantity:<%=item.quantity %>
-                                <p class="product-price">Price:<%=item.productID.price %>
-                                </p>
-
-                                <!-- Delete button here -->
-                                <form action="/delete-cart-item" method="post">
-                                    <input type="hidden" name="productID" value="<%=item.productID._id%>">
-                                    <button type="submit" class="btn">Delete</button>
-                                </form>
-
+                    <div class="item">
+                        <p class="product-title">
+                            <%=item.productID.title %>
+                        </p>
+                        <p class="product-qty">
+                            Qty:<%=item.quantity%>
+                        </p>
+                        <p class="product-price">Price:<%=item.productID.price%>
+                        </p>
+                        <form action="/delete-cart-item" method="post">
+                            <input type="hidden" name="productID" value="<%=item.productID._id%>">
+                            <button type="submit" class="btn btn-red btn-delete-item">Delete</button>
+                        </form>
                     </div>
 
                     <%})%>
                         <!-- Order Button Here -->
                         <form action="/order-items" method="post">
-                            <button class="btn">Order Now</button>
+                            <button class="btn order-btn">Order Now</button>
                         </form>
                         <br>
                         <br>
-                        <h1>Total Price:<%=totalPrice %>
+                        <h1>Total Price: Rs.<%=totalPrice %>
                         </h1>
                         </ul>
 
                         <%}else{%>
-                            <h1>No Products in Cart!!!</h1>
+                            <h1 class="warning">No Products in Cart!!!</h1>
                             <%}%>
 
 
         </main>
+        <%- include("../includes/footer.ejs") %>
 
 </body>
 

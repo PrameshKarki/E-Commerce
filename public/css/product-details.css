@@ -1,0 +1,26 @@
+.product-details{
+    width:30rem;
+    margin:2rem auto;
+    height:auto;
+    text-align: center;
+}
+.image-container{
+    width:20rem;
+    margin:1rem auto;
+    height: 20rem;
+    border-radius: 50%;
+}
+.image-container img{
+    width: 20rem;
+    height: 20rem;
+    border-radius: 50%;
+}
+.product-id{
+    font-size: 1.8rem;
+}
+.product-title{
+    font-size: 3rem;
+}
+.product-price,.product-description{
+    font-size: 2.2rem;
+}
