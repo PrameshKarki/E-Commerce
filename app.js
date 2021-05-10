@@ -3,26 +3,38 @@ const path = require('path');
 
 const express = require('express');
 const bodyParser = require('body-parser');
+//Import mongoose
+const mongoose = require("mongoose");
+const session = require("express-session");
+const MongoDBStore = require("connect-mongodb-session")(session);
 
 //Import routes
 const shopRoutes = require('./routes/shopRoute');
 const adminRoutes = require('./routes/adminRoute');
+const authRoutes = require("./routes/authRoute");
 
-//Import mongoose
-const mongoose = require("mongoose");
+//Import controllers
+const errorController = require('./controllers/errorController');
 
 //Import Models
 const User = require("./models/user");
 
+const MONGODB_URI = "mongodb://localhost:27017/mongooseShop";
+
+const store = new MongoDBStore({
+    uri: MONGODB_URI,
+    collections: "sessions"
+})
+
 //Instantiate express app
 const app = express();
-
-//Export controllers
-const errorController = require('./controllers/errorController');
 
 //Set template engine
 app.set("view engine", "ejs");
 app.set("views", "views");
+
+//Set Session
+app.use(session({ secret: "secretKey", resave: false, saveUninitialized: false, store: store }))
 
 //Set body parser
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -45,13 +57,16 @@ app.use((req, res, next) => {
 app.use(shopRoutes);
 //Middleware for admin routes
 app.use('/admin', adminRoutes);
+//Middleware for auth routes
+app.use(authRoutes);
+
 
 //Serve 404 page
 app.use(errorController.get404);
 //Don't invoke function here
 
 
-mongoose.connect("mongodb://localhost:27017/mongooseShop").then(() => {
+mongoose.connect(MONGODB_URI).then(() => {
     User.findOne().then(user => {
         if (!user) {
             const user = new User({ name: "Pramesh Karki", email: "prameshkarki0407@gmail.com", cart: { items: [] } })

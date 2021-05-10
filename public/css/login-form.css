@@ -1,0 +1,26 @@
+.loginForm{
+    width:35rem;
+    margin:5rem auto 0 auto;
+    line-height: 1.4;
+}
+.form-heading{
+    text-align: center;
+    font-size:2.5rem;
+    color:rgb(78, 78, 214);
+}
+.loginForm label{
+    font-size: 2rem;
+    display: block;
+}
+.loginForm .form-control{
+    margin:1rem;
+}
+.loginForm input{
+    width:100%;
+    height:2.5rem;
+    font-size: 2rem;
+}
+.loginForm input:focus{
+    border:none;
+    outline:0.1rem solid rgb(78, 78, 214);
+}
