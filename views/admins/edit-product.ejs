@@ -17,8 +17,7 @@
     <!-- Include navigation menu here -->
     <%- include('../includes/nav.ejs') %>
 
-        <form action="/admin/<% if(editMode){ %>edit-product <%}else{%>submit <%}%>" method="POST"
-            name="Product-Add-Form">
+        <form action="/admin/<% if(editMode){ %>edit-product <%}else{%>submit <%}%>" method="POST" class=" product-form">
             <label for="title">Title:</label>
             <input type="text" id="title" name="title" <%if(editMode){%>value="<%=product.title%>" <%}%> >
 

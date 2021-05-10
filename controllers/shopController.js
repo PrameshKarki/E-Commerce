@@ -8,7 +8,9 @@ const getProducts = (req, res, next) => {
         res.render('shop/product-list', {
             pageTitle: "Products-webTRON Shop",
             path: "/products",
-            products: products
+            products: products,
+            isAuthenticated: req.session.isLoggedIn
+
         });
     }).catch(err => console.log(err));
 
@@ -20,7 +22,9 @@ const getProduct = (req, res, next) => {
         res.render("shop/product-detail", {
             pageTitle: "Product Title-webTRON Shop",
             path: "/products",
-            product: product
+            product: product,
+            isAuthenticated: req.session.isLoggedIn
+
         })
     }).catch(err => {
         console.log(err);
@@ -29,11 +33,14 @@ const getProduct = (req, res, next) => {
 }
 
 const getHome = (req, res, next) => {
+    console.log("isAuthenticated", req.session.isLoggedIn);
     Product.find().then(products => {
         res.render('shop/index', {
             pageTitle: "Welcome to webTRON Shop",
             path: "/",
-            products: products
+            products: products,
+            isAuthenticated: req.session.isLoggedIn
+
         });
     }).catch(err => console.log(err));
 }
@@ -47,7 +54,9 @@ const getCart = (req, res, next) => {
             pageTitle: "Your Cart-webTRON Shop",
             path: "/cart",
             products: data,
-            totalPrice: totalPrice
+            totalPrice: totalPrice,
+            isAuthenticated: req.session.isLoggedIn
+
         })
     }).catch(err => {
         console.log(err);
@@ -66,7 +75,9 @@ const getOrders = (req, res, next) => {
             pageTitle: "Your orders",
             path: "/orders",
             data: data,
-            totalPrice: totalPrice
+            totalPrice: totalPrice,
+            isAuthenticated: req.session.isLoggedIn
+
         })
     }).catch(err => {
         console.log(err);

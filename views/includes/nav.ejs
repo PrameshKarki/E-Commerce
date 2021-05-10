@@ -7,23 +7,32 @@
             <li class="<%= path==='/products' ? 'active':'' %>">
                 <a href="/products">Products</a>
             </li>
-            <li class="<%= path==='/cart' ? 'active':'' %>">
-                <a href="/cart">Cart</a>
-            </li>
-            <li class="<%= path==='/orders' ? 'active':'' %>">
-                <a href="/orders">Orders</a>
-            </li>
+            <% if(isAuthenticated){ %>
+                <li class="<%= path==='/cart' ? 'active':'' %>">
+                    <a href="/cart">Cart</a>
+                </li>
+                <li class="<%= path==='/orders' ? 'active':'' %>">
+                    <a href="/orders">Orders</a>
+                </li>
 
-            <!-- <li class="<%= path==='/admin/add-product' ? 'active':'' %>">
-                <a href="/admin/add-product">Add Product</a>
-            </li>
-            <li class="<%= path==='/admin/products' ? 'active':'' %>">
-                <a href="/admin/products">Admin Products</a>
-            </li> -->
+                <li class="<%= path==='/admin/add-product' ? 'active':'' %>">
+                    <a href="/admin/add-product">Add Product</a>
+                </li>
+                <li class="<%= path==='/admin/products' ? 'active':'' %>">
+                    <a href="/admin/products">Admin Products</a>
+                </li>
+                <%}%>
 
         </ul>
-        <ul>
-            <li><a href="/login" class="btn btn-red login-btn">Log In</a></li>
-        </ul>
+        <%if(!isAuthenticated){ %>
+            <form action="/login" method="GET">
+                <button type="submit" class="btn btn-red login-btn">Log In</button>
+            </form>
+            <%}else{%>
+                <form action="/signout" method="POST">
+                    <button type="submit" class="btn btn-red login-btn">Sign Out</button>
+                </form>
+                <%}%>
+
     </nav>
 </header>

@@ -44,12 +44,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //Set middleware
 app.use((req, res, next) => {
-    User.findById("609790feb5af9d9496b3a024").then(user => {
-        req.user = user;
+    if (!req.session.user) {
         next();
-    }).catch(err => {
-        console.log(err);
-    })
+    } else {
+        User.findById(req.session.user._id).then(user => {
+            req.user = user;
+            next();
+        }).catch(err => {
+            console.log(err);
+        })
+
+    }
 
 })
 

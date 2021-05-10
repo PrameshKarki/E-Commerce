@@ -1,22 +1,22 @@
-form{
+form.product-form{
     margin:2rem auto;
     width: 40rem;
 
 }
-form input{
+form.product-form input{
     height:3rem;
 }
-form input,
-form textarea{
+form.product-form input,
+form.product-form textarea{
     display: block;
     width: 100%;
     margin:1rem 0;
 }
-form input:focus,
-form textarea:focus{
+form.product-form input:focus,
+form.product-form textarea:focus{
     border:none;
     outline:0.3rem solid rgb(78, 78, 214);
 }
-form label{
+form.product-form label{
     font-size: 2.2rem;
 }
