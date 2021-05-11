@@ -25,9 +25,15 @@
 
         </ul>
         <%if(!isAuthenticated){ %>
-            <form action="/login" method="GET">
-                <button type="submit" class="btn btn-red login-btn">Log In</button>
-            </form>
+            <div class="buttons">
+                <form action="/login" method="GET">
+                    <button type="submit" class="btn btn-red login-btn">Log In</button>
+                </form>
+                <form action="/signup" method="GET">
+                    <button type="submit" class="btn btn-red login-btn">Sign Up</button>
+                </form>
+
+            </div>
             <%}else{%>
                 <form action="/signout" method="POST">
                     <button type="submit" class="btn btn-red login-btn">Sign Out</button>

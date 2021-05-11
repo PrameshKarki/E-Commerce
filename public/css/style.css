@@ -22,6 +22,12 @@ header nav{
     height: 7rem;
     padding:0 5rem 0 0;
 }
+header nav .buttons{
+    display: flex;
+}
+header nav .buttons form{
+    margin:0 1rem;
+}
 header nav ul{
     display: flex;
     list-style: none;

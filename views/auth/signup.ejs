@@ -13,7 +13,7 @@
     </title>
 </head>
 <%- include("../includes/nav.ejs") %>
-    <form action="/login" name="loginForm" class="form" method="post">
+    <form action="/signup" name="signUpForm" class="form" method="POST">
         <h2 class="form-heading">Welcome to webTRON Shop</h2>
         <div class="form-control">
             <label for="email">Email:</label>
@@ -23,7 +23,11 @@
             <label for="password">Password:</label>
             <input type="password" name="password" id="password" required>
         </div>
-        <button type="submit" class="btn">Log In</button>
+        <div class="form-control">
+            <label for="confirmPassword">Confirm Password:</label>
+            <input type="password" name="confirmPassword" id="confirmPassword" required>
+        </div>
+        <button type="submit" class="btn">Sign Up</button>
     </form>
 
     <%- include("../includes/footer.ejs") %>
