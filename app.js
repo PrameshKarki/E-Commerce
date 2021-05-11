@@ -5,8 +5,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 //Import mongoose
 const mongoose = require("mongoose");
+
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
+//Import module to connect flash
+const flash = require("connect-flash");
+const csrf = require("csurf");
+const csrfProtection = csrf();
 
 //Import routes
 const shopRoutes = require('./routes/shopRoute');
@@ -57,6 +62,23 @@ app.use((req, res, next) => {
     }
 
 })
+app.use(csrfProtection);
+app.use(flash());
+
+//Set locals for render
+app.use((req, res, next) => {
+    let errMessage = req.flash("err-message");
+    if (errMessage.length > 0) {
+        errMessage = errMessage.pop();
+    } else {
+        errMessage = null;
+    }
+    res.locals.isAuthenticated = req.session.isLoggedIn;
+    res.locals.csrfToken = req.csrfToken();
+    res.locals.errMessage = errMessage;
+    next();
+})
+
 
 //Middleware for shop routes
 app.use(shopRoutes);

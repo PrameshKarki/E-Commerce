@@ -26,7 +26,31 @@ footer {
             clip-path: polygon(52% 3%, 100% 5%, 100% 100%, 0 100%, 0 6%);
     z-index: -1;
   }
-  
+ .alert{
+   position: absolute;
+   top:-5rem;
+   right:5rem;
+   min-width:25rem;
+   height:3rem;
+   padding: 1rem;
+   font-size: 2rem;
+   color: #e81500;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   box-shadow: 0px 5px 14px rgba(0, 0, 0, 0.25);
+ }
+.close-btn{
+  border:none;
+  outline:none;
+  background: #e81500;
+  color:white;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  cursor: pointer;
+
+}
   .shop-details {
     font-size: 1.8rem;
     line-height: 1.4;

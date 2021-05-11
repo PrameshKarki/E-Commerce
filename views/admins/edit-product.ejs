@@ -17,7 +17,8 @@
     <!-- Include navigation menu here -->
     <%- include('../includes/nav.ejs') %>
 
-        <form action="/admin/<% if(editMode){ %>edit-product <%}else{%>submit <%}%>" method="POST" class=" product-form">
+        <form action="/admin/<% if(editMode){ %>edit-product <%}else{%>submit <%}%>" method="POST"
+            class=" product-form">
             <label for="title">Title:</label>
             <input type="text" id="title" name="title" <%if(editMode){%>value="<%=product.title%>" <%}%> >
 
@@ -31,6 +32,7 @@
                                     <label for="description">Description:</label>
                                     <textarea name="description" id="description"
                                         rows="10"><%if(editMode){%><%=product.description%><%}%></textarea>
+                                    <input type="hidden" name="_csrf" value="<%=csrfToken %>">
                                     <% if(editMode){ %>
                                         <input type="hidden" name="ID" value="<%=product._id%>">
                                         <%}%>

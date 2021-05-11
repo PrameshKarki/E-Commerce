@@ -9,7 +9,6 @@ const getProducts = (req, res, next) => {
             pageTitle: "Products-webTRON Shop",
             path: "/products",
             products: products,
-            isAuthenticated: req.session.isLoggedIn
 
         });
     }).catch(err => console.log(err));
@@ -23,7 +22,6 @@ const getProduct = (req, res, next) => {
             pageTitle: "Product Title-webTRON Shop",
             path: "/products",
             product: product,
-            isAuthenticated: req.session.isLoggedIn
 
         })
     }).catch(err => {
@@ -39,7 +37,6 @@ const getHome = (req, res, next) => {
             pageTitle: "Welcome to webTRON Shop",
             path: "/",
             products: products,
-            isAuthenticated: req.session.isLoggedIn
 
         });
     }).catch(err => console.log(err));
@@ -55,7 +52,6 @@ const getCart = (req, res, next) => {
             path: "/cart",
             products: data,
             totalPrice: totalPrice,
-            isAuthenticated: req.session.isLoggedIn
 
         })
     }).catch(err => {
@@ -76,7 +72,6 @@ const getOrders = (req, res, next) => {
             path: "/orders",
             data: data,
             totalPrice: totalPrice,
-            isAuthenticated: req.session.isLoggedIn
 
         })
     }).catch(err => {

@@ -36,6 +36,7 @@
             </div>
             <%}else{%>
                 <form action="/signout" method="POST">
+                    <input type="hidden" name="_csrf" value="<%=csrfToken %>">
                     <button type="submit" class="btn btn-red login-btn">Sign Out</button>
                 </form>
                 <%}%>

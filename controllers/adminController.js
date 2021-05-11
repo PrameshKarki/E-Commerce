@@ -5,7 +5,6 @@ const getAddProduct = (req, res, next) => {
         pageTitle: 'Add Product',
         path: "/admin/add-product",
         editMode: false,
-        isAuthenticated: req.session.isLoggedIn
 
     });
 };
@@ -26,7 +25,6 @@ module.exports.getEditProduct = (req, res, next) => {
                     path: "/admin/edit-product",
                     editMode: true,
                     product: product, //For single element only
-                    isAuthenticated: req.session.isLoggedIn
 
                 })
             }
@@ -77,7 +75,6 @@ const getProducts = (req, res, next) => {
             pageTitle: "Products-webTRON Shop",
             path: "/admin/products",
             products: products,
-            isAuthenticated: req.session.isLoggedIn
 
         });
     }).catch(err => console.log(err));

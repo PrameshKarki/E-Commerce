@@ -1,39 +1,49 @@
 <footer>
-    <!-- shop Details -->
-    <div class="shop-details">
-        <p>webTRON Suppliers</p>
-        <p>Itahari,Nepal</p>
-    </div>
-    <!-- shop Contact Information -->
-    <div class="shop-contactinformation">
-        <ul>
-            <li>Fax.:11111 </li>
-            <li>Tel:123456789 </li>
-            <li>info@webtron.com.np </li>
-            <li>Regd No: 64426/066/067 </li>
-            <li>VAT/PAN no:303852617 </li>
-        </ul>
-    </div>
-    <!-- Links -->
-    <div class="links">
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/products">Products</a></li>
-            <li><a href="/cart">Cart</a></li>
-        </ul>
-        <ul>
-            <li><a href="/orders">Orders</a></li>
-        </ul>
+    <% if(errMessage){ %>
+        <div class="alert">
+            <p class="message">
+                <%= errMessage %>
+            </p>
+            <button class="close-btn" onclick="this.parentNode.style.display='none'">
+                X
+            </button>
+        </div>
+        <% } %>
+            <!-- shop Details -->
+            <div class="shop-details">
+                <p>webTRON Suppliers</p>
+                <p>Kathmandu,Nepal</p>
+            </div>
+            <!-- shop Contact Information -->
+            <div class="shop-contactinformation">
+                <ul>
+                    <li>Fax.:11111 </li>
+                    <li>Tel:123456789 </li>
+                    <li>info@webtron.com.np </li>
+                    <li>Regd No: 64426/066/067 </li>
+                    <li>VAT/PAN no:303852617 </li>
+                </ul>
+            </div>
+            <!-- Links -->
+            <div class="links">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/products">Products</a></li>
+                    <li><a href="/cart">Cart</a></li>
+                </ul>
+                <ul>
+                    <li><a href="/orders">Orders</a></li>
+                </ul>
 
-    </div>
-    <!-- Social Medias -->
-    <div class="social-medias">
-        <ul>
-            <li><a href="#"><i class="fab fa-facebook-f" title="Facebook"></i></a></li>
-            <li><a href="#"><i class="fab fa-linkedin-in" title="Linkedin"></i></a></li>
-            <li><a href="#"><i class="fab fa-instagram" title="Instagram"></i></a></li>
-        </ul>
+            </div>
+            <!-- Social Medias -->
+            <div class="social-medias">
+                <ul>
+                    <li><a href="#"><i class="fab fa-facebook-f" title="Facebook"></i></a></li>
+                    <li><a href="#"><i class="fab fa-linkedin-in" title="Linkedin"></i></a></li>
+                    <li><a href="#"><i class="fab fa-instagram" title="Instagram"></i></a></li>
+                </ul>
 
-    </div>
+            </div>
 
 </footer>
