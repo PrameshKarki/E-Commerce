@@ -16,15 +16,15 @@ module.exports.getEditProduct = (req, res, next) => {
 
     } else {
         const productID = req.params.productID;
-        Product.findById(productID).then(product => {
-            if (!product) {
-                res.redirect('/');
+        Product.find({ _id: productID, userId: req.user._id }).then(product => {
+            if (product.length <= 0) {
+                res.redirect('/admin/products');
             } else {
                 res.render('admins/edit-product', {
                     pageTitle: "Edit Product",
                     path: "/admin/edit-product",
                     editMode: true,
-                    product: product, //For single element only
+                    product: product[0], //For single element only
 
                 })
             }
@@ -45,6 +45,9 @@ module.exports.postEditProduct = (req, res, next) => {
     const updatedImageUrl = req.body.imageURL;
     const updatedDescription = req.body.description;
     Product.findById(ID).then((product) => {
+        if (req.user._id.toString() !== product.userId.toString()) {
+            return res.redirect("/admin/products");
+        }
         product.title = updatedTitle;
         product.price = updatedPrice;
         product.description = updatedDescription;
@@ -61,7 +64,7 @@ module.exports.postEditProduct = (req, res, next) => {
 
 module.exports.postDeleteProduct = (req, res, next) => {
     let ID = req.body.ID;
-    Product.findByIdAndDelete(ID).then(() => {
+    Product.deleteOne({ _id: ID, userId: req.user._id }).then(() => {
         //Remove from cart too
         req.user.removeCartProduct(ID).then(() => {
             res.redirect("/admin/products");
@@ -70,7 +73,7 @@ module.exports.postDeleteProduct = (req, res, next) => {
 }
 
 const getProducts = (req, res, next) => {
-    Product.find().then((products) => {
+    Product.find({ userId: req.user._id }).then((products) => {
         res.render('admins/products', {
             pageTitle: "Products-webTRON Shop",
             path: "/admin/products",
