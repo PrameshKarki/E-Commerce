@@ -11,7 +11,11 @@ const getProducts = (req, res, next) => {
             products: products,
 
         });
-    }).catch(err => console.log(err));
+    }).catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    });
 
 
 }
@@ -25,7 +29,10 @@ const getProduct = (req, res, next) => {
 
         })
     }).catch(err => {
-        console.log(err);
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+
     })
 
 }
@@ -39,7 +46,11 @@ const getHome = (req, res, next) => {
             products: products,
 
         });
-    }).catch(err => console.log(err));
+    }).catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    });
 }
 
 const getCart = (req, res, next) => {
@@ -55,13 +66,16 @@ const getCart = (req, res, next) => {
 
         })
     }).catch(err => {
-        console.log(err);
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+
     })
 }
 
 const getOrders = (req, res, next) => {
     let totalPrice = 0;
-    Order.find({ "userID": req.user._id }).then((data) => {
+    Order.find({ userID: req.user._id }).then((data) => {
         data.forEach(d => {
             d.items.forEach(i => {
                 totalPrice += i.details.price * i.quantity;
@@ -75,7 +89,10 @@ const getOrders = (req, res, next) => {
 
         })
     }).catch(err => {
-        console.log(err);
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+
     })
 }
 exports.postCart = (req, res, next) => {
@@ -83,7 +100,10 @@ exports.postCart = (req, res, next) => {
     req.user.addToCart(productID).then(data => {
         res.redirect("/cart");
     }).catch(err => {
-        console.log(err);
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+
     })
 
 
@@ -95,7 +115,10 @@ exports.postDeleteCartItem = (req, res, next) => {
         res.redirect("/cart");
 
     }).catch(err => {
-        console.log(err);
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+
     })
 }
 

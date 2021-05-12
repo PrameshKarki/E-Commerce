@@ -37,7 +37,11 @@ exports.postLogin = (req, res, next) => {
                 console.log(err);
             })
         }
-    }).catch(err => console.log(err));
+    }).catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    });
 
 }
 
@@ -78,7 +82,11 @@ exports.postSignup = (req, res, next) => {
         }).catch(err => {
             console.log(err);
         })
-    }).catch(err => console.log(err))
+    }).catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    })
 }
 
 exports.getForgetPassword = (req, res, next) => {
@@ -112,7 +120,10 @@ exports.postForgetPassword = (req, res, next) => {
             })
         }
     }).catch(err => {
-        console.log(err);
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+
     })
 }
 
@@ -132,7 +143,10 @@ exports.getResetPassword = (req, res, next) => {
             return res.redirect("/forget-password");
         }
     }).catch(err => {
-        console.log(err);
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+
     })
 
 }
@@ -160,6 +174,9 @@ exports.postResetPassword = (req, res, next) => {
 
         }
     }).catch(err => {
-        console.log(err);
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+
     })
 }

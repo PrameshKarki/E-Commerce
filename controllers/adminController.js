@@ -18,6 +18,7 @@ module.exports.getEditProduct = (req, res, next) => {
         const productID = req.params.productID;
         Product.find({ _id: productID, userId: req.user._id }).then(product => {
             if (product.length <= 0) {
+                req.flash("err-message", "You are not authorized!");
                 res.redirect('/admin/products');
             } else {
                 res.render('admins/edit-product', {
@@ -30,7 +31,10 @@ module.exports.getEditProduct = (req, res, next) => {
             }
 
         }).catch(err => {
-            console.log(err);
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+
         })
 
     }
@@ -46,6 +50,7 @@ module.exports.postEditProduct = (req, res, next) => {
     const updatedDescription = req.body.description;
     Product.findById(ID).then((product) => {
         if (req.user._id.toString() !== product.userId.toString()) {
+            req.flash("err-message", "You are not authorized!");
             return res.redirect("/admin/products");
         }
         product.title = updatedTitle;
@@ -54,10 +59,12 @@ module.exports.postEditProduct = (req, res, next) => {
         product.imageURL = updatedImageUrl;
         return product.save();
     }).then(() => {
-
         res.redirect("/admin/products");
     }).catch((err) => {
-        console.log(err);
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+
     });
 
 }
@@ -69,7 +76,11 @@ module.exports.postDeleteProduct = (req, res, next) => {
         req.user.removeCartProduct(ID).then(() => {
             res.redirect("/admin/products");
         })
-    }).catch(err => console.log(err));
+    }).catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    });
 }
 
 const getProducts = (req, res, next) => {
@@ -80,7 +91,11 @@ const getProducts = (req, res, next) => {
             products: products,
 
         });
-    }).catch(err => console.log(err));
+    }).catch(err => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    });
 }
 
 const postSubmit = (req, res, next) => {
@@ -96,7 +111,10 @@ const postSubmit = (req, res, next) => {
         res.redirect('/');
 
     }).catch(err => {
-        console.log(err);
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+
     });
 };
 

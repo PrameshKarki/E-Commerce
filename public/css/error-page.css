@@ -1,6 +1,13 @@
+.container{
+    line-height: 1.4;
+}
 .warning{
     font-size: 3rem;
     color: red;
     text-align: center;
     margin-top: 5rem;
+}
+p{
+    text-align: center;
+    font-size: 2rem;
 }

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= pageTitle %>
+    </title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/error-page.css">
+    <link rel="stylesheet" href="/css/footer.css">
+</head>
+
+<body>
+    <%- include('includes/nav.ejs') %>;
+        <div class="container">
+            <h1 class="warning">Some error occurred!</h1>
+            <p>We're working on fixing this,Sorry for inconvenience!!!</p>
+            <p>- IT Department,webTRON Shop</p>
+        </div>
+        <%- include("includes/footer.ejs") %>
+</body>
+
+</html>

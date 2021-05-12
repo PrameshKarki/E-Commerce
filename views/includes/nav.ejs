@@ -1,45 +1,42 @@
 <header>
-    <nav>
-        <ul>
-            <li class="<%= path==='/' ? 'active':'' %>">
-                <a href="/">Home</a>
-            </li>
-            <li class="<%= path==='/products' ? 'active':'' %>">
-                <a href="/products">Products</a>
-            </li>
-            <% if(isAuthenticated){ %>
-                <li class="<%= path==='/cart' ? 'active':'' %>">
-                    <a href="/cart">Cart</a>
-                </li>
-                <li class="<%= path==='/orders' ? 'active':'' %>">
-                    <a href="/orders">Orders</a>
-                </li>
+  <nav>
+    <ul>
+      <li class="<%= path==='/' ? 'active':'' %>">
+        <a href="/">Home</a>
+      </li>
+      <li class="<%= path==='/products' ? 'active':'' %>">
+        <a href="/products">Products</a>
+      </li>
+      <% if(isAuthenticated){ %>
+      <li class="<%= path==='/cart' ? 'active':'' %>">
+        <a href="/cart">Cart</a>
+      </li>
+      <li class="<%= path==='/orders' ? 'active':'' %>">
+        <a href="/orders">Orders</a>
+      </li>
 
-                <li class="<%= path==='/admin/add-product' ? 'active':'' %>">
-                    <a href="/admin/add-product">Add Product</a>
-                </li>
-                <li class="<%= path==='/admin/products' ? 'active':'' %>">
-                    <a href="/admin/products">Admin Products</a>
-                </li>
-                <%}%>
-
-        </ul>
-        <%if(!isAuthenticated){ %>
-            <div class="buttons">
-                <form action="/login" method="GET">
-                    <button type="submit" class="btn btn-red login-btn">Log In</button>
-                </form>
-                <form action="/signup" method="GET">
-                    <button type="submit" class="btn btn-red login-btn">Sign Up</button>
-                </form>
-
-            </div>
-            <%}else{%>
-                <form action="/signout" method="POST">
-                    <input type="hidden" name="_csrf" value="<%=csrfToken %>">
-                    <button type="submit" class="btn btn-red login-btn">Sign Out</button>
-                </form>
-                <%}%>
-
-    </nav>
+      <li class="<%= path==='/admin/add-product' ? 'active':'' %>">
+        <a href="/admin/add-product">Add Product</a>
+      </li>
+      <li class="<%= path==='/admin/products' ? 'active':'' %>">
+        <a href="/admin/products">Admin Products</a>
+      </li>
+      <%}%>
+    </ul>
+    <%if(!isAuthenticated){ %>
+    <div class="buttons">
+      <form action="/login" method="GET">
+        <button type="submit" class="btn btn-red login-btn">Log In</button>
+      </form>
+      <form action="/signup" method="GET">
+        <button type="submit" class="btn btn-red login-btn">Sign Up</button>
+      </form>
+    </div>
+    <%}else{%>
+    <form action="/signout" method="POST">
+      <input type="hidden" name="_csrf" value="<%=csrfToken %>" />
+      <button type="submit" class="btn btn-red login-btn">Sign Out</button>
+    </form>
+    <%}%>
+  </nav>
 </header>
