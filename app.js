@@ -69,15 +69,22 @@ app.use(flash());
 
 //Set locals for render
 app.use((req, res, next) => {
+
     let errMessage = req.flash("err-message");
     if (errMessage.length > 0) {
-        errMessage = errMessage.pop();
+        res.locals.errMessage = [errMessage[0]];
     } else {
-        errMessage = null;
+        res.locals.errMessage = [];
+    }
+    let role;
+    if (req.user) {
+        role = req.user.role;
+    } else {
+        role = undefined;
     }
     res.locals.isAuthenticated = req.session.isLoggedIn;
     res.locals.csrfToken = req.csrfToken();
-    res.locals.errMessage = errMessage;
+    res.locals.role = role;
     next();
 })
 
@@ -95,16 +102,16 @@ app.use(errorController.get404);
 //Don't invoke function here
 
 //Express middleware to handle errors
-app.use((err, req, res, next) => {
-    if (!err.httpStatusCode)
-        err.httpStatusCode = 500;
-    res.status(err.httpStatusCode).render("500.ejs", {
-        pageTitle: "Server Error-webTRON Shop",
-        path: "/500",
-        isAuthenticated: req.session.isLoggedIn,
-        errMessage: undefined
-    })
-})
+// app.use((err, req, res, next) => {
+//     if (!err.httpStatusCode)
+//         err.httpStatusCode = 500;
+//     res.status(err.httpStatusCode).render("500.ejs", {
+//         pageTitle: "Server Error-webTRON Shop",
+//         path: "/500",
+//         isAuthenticated: req.session.isLoggedIn,
+//         errMessage: []
+//     })
+// })
 
 mongoose.connect(MONGODB_URI).then(() => {
     app.listen(3000);

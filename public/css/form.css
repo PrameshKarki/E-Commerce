@@ -24,3 +24,6 @@
     border:none;
     outline:0.1rem solid rgb(78, 78, 214);
 }
+.form input.invalid{
+    border-color:red ;
+}

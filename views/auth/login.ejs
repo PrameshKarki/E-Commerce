@@ -17,11 +17,13 @@
         <h2 class="form-heading">Welcome to webTRON Shop</h2>
         <div class="form-control">
             <label for="email">Email:</label>
-            <input type="text" name="email" id="email" required>
+            <input type="text" class="<%= error.find(ele=>ele.param==='email') ? 'invalid': ' '%>" name="email"
+                id="email" value="<%=oldValue.email%>" required>
         </div>
         <div class="form-control">
             <label for="password">Password:</label>
-            <input type="password" name="password" id="password" required>
+            <input type="password" class="<%= error.find(ele=>ele.param==='password') ? 'invalid': ' '%>"
+                name="password" id="password" values="<%=oldValue.password %>" required>
         </div>
         <input type="hidden" name="_csrf" value="<%=csrfToken %>">
         <button type="submit" class="btn">Log In</button>

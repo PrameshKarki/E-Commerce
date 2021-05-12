@@ -1,12 +1,17 @@
 <footer>
-    <% if(errMessage){ %>
-        <div class="alert">
-            <p class="message">
-                <%= errMessage %>
-            </p>
-            <button class="close-btn" onclick="this.parentNode.style.display='none'">
-                X
-            </button>
+    <% if(errMessage.length>0){ %>
+        <div class="alert-container">
+            <% errMessage.forEach(element=>{ %>
+                <div class="alert">
+                    <p class="message">
+                        <%= element %>
+                    </p>
+                    <button class="close-btn" onclick="this.parentNode.style.display='none'">
+                        X
+                    </button>
+                </div>
+
+                <%})%>
         </div>
         <% } %>
             <!-- shop Details -->

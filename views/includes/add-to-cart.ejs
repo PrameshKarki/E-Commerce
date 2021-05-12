@@ -1,4 +1,4 @@
-<% if(isAuthenticated){ %>
+<% if(isAuthenticated && role!=="admin" ){ %>
     <form action="/cart" method="post">
         <button class="btn">Add to Cart</button>
         <input type="hidden" name="_csrf" value="<%=csrfToken %>">

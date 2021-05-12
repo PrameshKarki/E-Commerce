@@ -2,45 +2,48 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
         <%= pageTitle %>
     </title>
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/add-product-form.css">
-    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/add-product-form.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
 </head>
 
 <body>
     <!-- Include navigation menu here -->
     <%- include('../includes/nav.ejs') %>
 
-        <form action="/admin/<% if(editMode){ %>edit-product <%}else{%>submit <%}%>" method="POST"
-            class=" product-form">
+        <form action="/admin/<% if(editMode){ %>edit-product <%}else{%>submit <%}%>" method="POST" class="product-form">
             <label for="title">Title:</label>
-            <input type="text" id="title" name="title" <%if(editMode){%>value="<%=product.title%>" <%}%> >
+            <input type="text" id="title" class="<%= error.find(element=>element.param==='title') ? 'invalid' : '' %> "
+                name="title" <% if(editMode) {%>value="<%=product.title%>" <%}%>
 
                     <label for="price">Price:</label>
-                    <input type="text" id="price" name="price" <%if(editMode){%>value="<%=product.price%>" <%}%>>
-
+                    <input type="text" id="price"
+                        class="<%= error.find(element=>element.param==='price') ? 'invalid' : '' %>" name="price" <%
+                        if(editMode){ %>value="<%=product.price%>" <%}%>
                             <label for="imageURL">Image URL:</label>
-                            <input type="text" name="imageURL" id="imageURL" <%if(editMode){%>value="
-                            <%=product.imageURL%>"<%}%>>
+                            <input type="text"
+                                class="<%= error.find(element=>element.param==='imageUrl') ? 'invalid' : '' %>"
+                                name="imageURL" id="imageURL" <% if(editMode || hasError ){ %>value="
+                            <%=product.imageURL%>"<%}%>
 
                                     <label for="description">Description:</label>
                                     <textarea name="description" id="description"
-                                        rows="10"><%if(editMode){%><%=product.description%><%}%></textarea>
-                                    <input type="hidden" name="_csrf" value="<%=csrfToken %>">
+                                        class="<%= error.find(element=>element.param==='description') ? 'invalid' : '' %>"
+                                        rows="10">
+<%if(editMode){%><%=product.description%><%}%></textarea>
+                                    <input type="hidden" name="_csrf" value="<%=csrfToken %>" />
                                     <% if(editMode){ %>
-                                        <input type="hidden" name="ID" value="<%=product._id%>">
+                                        <input type="hidden" name="ID" value="<%=product._id%>" />
                                         <%}%>
 
                                             <button class="btn" type="submit">
-                                                <% if(editMode){ %>
-                                                    Update Item
-                                                    <%} else{%>Add Item<% } %>
+                                                <% if(editMode){ %> Update Item <%} else{%>Add Item<% } %>
                                             </button>
         </form>
         <%- include("../includes/footer.ejs") %>

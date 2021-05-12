@@ -26,14 +26,18 @@ footer {
             clip-path: polygon(52% 3%, 100% 5%, 100% 100%, 0 100%, 0 6%);
     z-index: -1;
   }
+.alert-container{
+  position: absolute;
+  top:-15rem;
+  right:5rem;
+
+}
  .alert{
-   position: absolute;
-   top:-5rem;
-   right:5rem;
    min-width:25rem;
    height:3rem;
    padding: 1rem;
    font-size: 2rem;
+   margin:1rem 0;
    color: #e81500;
    display: flex;
    justify-content: space-between;

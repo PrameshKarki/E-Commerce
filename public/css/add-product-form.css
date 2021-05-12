@@ -20,3 +20,7 @@ form.product-form textarea:focus{
 form.product-form label{
     font-size: 2.2rem;
 }
+form.product-form input.invalid,
+form.product-form textarea.invalid{
+border-color:red;
+}
