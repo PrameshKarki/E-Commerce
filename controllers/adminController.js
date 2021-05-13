@@ -30,7 +30,7 @@ module.exports.getEditProduct = (req, res, next) => {
                     path: "/admin/edit-product",
                     editMode: true,
                     hasError: false,
-                    error:[],
+                    error: [],
                     product: product[0], //For single element only
 
                 })
@@ -131,7 +131,7 @@ const postSubmit = (req, res, next) => {
     let body = JSON.parse(JSON.stringify(req.body));
     const title = body.title;
     const price = body.price;
-    const imageUrl = body.imageURL;
+    const imageURL = body.imageURL;
     const description = body.description;
 
     const errors = validationResult(req);
@@ -146,7 +146,7 @@ const postSubmit = (req, res, next) => {
             product: {
                 title: title,
                 price: price,
-                imageUrl: imageUrl,
+                imageURL: imageURL,
                 description: description
             }
         })
