@@ -7,11 +7,33 @@ const bodyParser = require('body-parser');
 const mongoose = require("mongoose");
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
+//Import multer to get image from request
+const multer = require("multer");
 //Import module to connect flash
 const flash = require("connect-flash");
 const csrf = require("csurf");
 
 const csrfProtection = csrf();
+
+
+const fileStorage = multer.diskStorage({
+    destination: (err, file, cb) => {
+        cb(null, 'images');
+    },
+    filename: (err, file, cb) => {
+        cb(null, new Date().toISOString() + '-' + file.originalname);
+    }
+});
+
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype === "image/jpeg") {
+        cb(null, true);
+    } else {
+        cb(null, false);
+    }
+}
+
+
 
 //Import routes
 const shopRoutes = require('./routes/shopRoute');
@@ -41,11 +63,17 @@ app.set("views", "views");
 //Set Session
 app.use(session({ secret: "secretKey", resave: false, saveUninitialized: false, store: store }))
 
+
+// Set multer
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single("image"));
 //Set body parser
 app.use(bodyParser.urlencoded({ extended: false }));
 
+
 //For serving static files
 app.use(express.static(path.join(__dirname, 'public')));
+app.use("/images",express.static(path.join(__dirname, 'images')));
+
 app.use(csrfProtection);
 
 //Set middleware

@@ -7,7 +7,6 @@ const getAddProduct = (req, res, next) => {
         path: "/admin/add-product",
         editMode: false,
         hasError: false,
-        errMessage: [],
         error: []
 
     });
@@ -52,7 +51,7 @@ module.exports.postEditProduct = (req, res, next) => {
     const ID = req.body.ID;
     const updatedTitle = req.body.title;
     const updatedPrice = req.body.price;
-    const updatedImageUrl = req.body.imageURL;
+    const image = req.file;
     const updatedDescription = req.body.description;
     const errors = validationResult(req);
 
@@ -69,7 +68,6 @@ module.exports.postEditProduct = (req, res, next) => {
                 title: updatedTitle,
                 description: updatedDescription,
                 price: updatedPrice,
-                imageURL: updatedImageUrl
             }
         })
 
@@ -82,7 +80,10 @@ module.exports.postEditProduct = (req, res, next) => {
             product.title = updatedTitle;
             product.price = updatedPrice;
             product.description = updatedDescription;
-            product.imageURL = updatedImageUrl;
+            if (image) {
+
+                product.imageURL = image.path;
+            }
             return product.save();
         }).then(() => {
             res.redirect("/admin/products");
@@ -131,9 +132,23 @@ const postSubmit = (req, res, next) => {
     let body = JSON.parse(JSON.stringify(req.body));
     const title = body.title;
     const price = body.price;
-    const imageURL = body.imageURL;
     const description = body.description;
-
+    const image = req.file;
+    if (!image) {
+        return res.status(422).render("admins/edit-product.ejs", {
+            pageTitle: "Add Product-webTRON Shop",
+            path: "/admin/add-product",
+            editMode: false,
+            hasError: true,
+            errMessage: ["Invalid image type/format"],
+            error: [],
+            product: {
+                title: title,
+                price: price,
+                description: description
+            }
+        })
+    }
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         res.status(422).render("admins/edit-product.ejs", {
@@ -146,15 +161,14 @@ const postSubmit = (req, res, next) => {
             product: {
                 title: title,
                 price: price,
-                imageURL: imageURL,
                 description: description
             }
         })
 
     } else {
-
+        const imageURL = image.path;
         //Instantiate new Product
-        const product = new Product({ title: title, price: price, description: description, imageURL: imageUrl, userId: req.user._id });
+        const product = new Product({ title: title, price: price, description: description, imageURL: imageURL, userId: req.user._id });
         //Save product
         product.save().then(() => {
             res.redirect('/');

@@ -21,7 +21,6 @@ router.get("/edit-product/:productID", isAuth, adminController.getEditProduct);
 router.post("/edit-product", isAuth, [
     body("title", "Invalid title").isLength({ min: 3 }).trim(),
     body("price", "Price must be float value").isFloat().trim(),
-    // body("imageURL", "Invalid URL").isURL().trim(),
     body("description", "Invalid description").isString().isLength({ min: 10, max: 255 }).trim()
 ], adminController.postEditProduct)
 
@@ -30,7 +29,6 @@ router.post("/delete-product", isAuth, adminController.postDeleteProduct);
 router.post('/submit', isAuth, [
     body("title", "Invalid title").isLength({ min: 3 }).trim(),
     body("price", "Price must be float value").isFloat().trim(),
-    // body("imageURL", "Invalid URL").isURL().trim(),
     body("description", "Invalid description").isString().isLength({ min: 10, max: 255 }).trim()
 
 

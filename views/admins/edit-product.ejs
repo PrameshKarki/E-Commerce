@@ -18,6 +18,7 @@
       action="/admin/<% if(editMode){ %>edit-product <%}else{%>submit <%}%>"
       method="POST"
       class="product-form"
+      enctype="multipart/form-data"
     >
       
     <label for="title">Title:</label>
@@ -40,16 +41,12 @@
         value="<%=product.price%>" <%}%>
         >
 
-      <label for="imageURL">Image URL:</label>
+      <label for="image">Upload Image:</label>
       <input
-        type="text"
-        class="<%= error.find(element=>element.param==='imageURL') ? 'invalid' : '' %>"
-        name="imageURL"
-        id="imageURL"
-        <% if(editMode || hasError){ %>
-        value=" <%=product.imageURL%>"<%}%>
-        >
-
+        type="file"
+        name="image"
+        id="image"
+      >
       <label for="description">Description:</label>
       <textarea
         name="description"
