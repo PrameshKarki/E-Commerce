@@ -23,6 +23,7 @@ router.post("/order-items", isAuth, shopController.postOrderItems);
 
 router.get("/orders", isAuth, shopController.getOrders);
 
+router.get("/receipt/:orderID", isAuth, shopController.getReceipt);
 
 //Export router
 module.exports = router;

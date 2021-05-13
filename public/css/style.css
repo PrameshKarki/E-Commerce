@@ -104,6 +104,10 @@ margin:1rem 0;
     margin:1rem auto;
     box-shadow: 0px 5px 14px rgba(0, 0, 0, 0.25);
 }
+.btn a{
+    color:white;
+    text-decoration: none;
+}
 .btn-red{
     background: #e81500;
 

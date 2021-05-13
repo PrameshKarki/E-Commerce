@@ -72,7 +72,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 //For serving static files
 app.use(express.static(path.join(__dirname, 'public')));
-app.use("/images",express.static(path.join(__dirname, 'images')));
+app.use("/images", express.static(path.join(__dirname, 'images')));
 
 app.use(csrfProtection);
 
@@ -129,17 +129,17 @@ app.use(authRoutes);
 app.use(errorController.get404);
 //Don't invoke function here
 
-//Express middleware to handle errors
-// app.use((err, req, res, next) => {
-//     if (!err.httpStatusCode)
-//         err.httpStatusCode = 500;
-//     res.status(err.httpStatusCode).render("500.ejs", {
-//         pageTitle: "Server Error-webTRON Shop",
-//         path: "/500",
-//         isAuthenticated: req.session.isLoggedIn,
-//         errMessage: []
-//     })
-// })
+// Express middleware to handle errors
+app.use((err, req, res, next) => {
+    if (!err.httpStatusCode)
+        err.httpStatusCode = 500;
+    res.status(err.httpStatusCode).render("500.ejs", {
+        pageTitle: "Server Error-webTRON Shop",
+        path: "/500",
+        errMessage:[],
+        isAuthenticated: req.session.isLoggedIn,
+    })
+})
 
 mongoose.connect(MONGODB_URI).then(() => {
     app.listen(3000);

@@ -1,3 +1,6 @@
+const fs = require('fs');
+const path = require('path');
+
 //Import product model
 const Product = require('../models/product');
 const Order = require("../models/order");
@@ -38,7 +41,6 @@ const getProduct = (req, res, next) => {
 }
 
 const getHome = (req, res, next) => {
-    console.log("isAuthenticated", req.session.isLoggedIn);
     Product.find().then(products => {
         res.render('shop/index', {
             pageTitle: "Welcome to webTRON Shop",
@@ -128,6 +130,36 @@ exports.postOrderItems = (req, res, next) => {
         res.redirect("/orders");
     })
 
+}
+
+exports.getReceipt = (req, res, next) => {
+    const orderID = req.params.orderID;
+    const receiptName = `receipt-${orderID}.pdf`;
+    const receiptPath = path.join('data', 'receipts', receiptName);
+
+    Order.findOne({ _id: orderID }).then((order) => {
+        if (order.userID.toString() === req.user._id.toString()) {
+            const file = fs.createReadStream(receiptPath);
+            res.setHeader("Content-Type", "application/pdf");
+            res.setHeader("Content-Disposition", `inline;filename=${receiptName}`);
+            file.pipe(res);
+
+            // fs.readFile(receiptPath, (err, data) => {
+            //     if (err) {
+            //         return next(new Error(err));
+            //     } else {
+            //         res.setHeader("Content-Type", "application/pdf");
+            //         res.setHeader("Content-Disposition", `inline;filename=${receiptName}`);
+            //         res.send(data);
+            //     }
+            // })
+        } else {
+            next(new Error("Not Authorized!"));
+        }
+
+    }).catch(err => {
+        next(new Error(err));
+    })
 }
 
 module.exports.getProducts = getProducts;

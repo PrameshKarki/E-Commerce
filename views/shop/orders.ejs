@@ -1,33 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%= pageTitle %></title>
-    <link rel="stylesheet" href="/css/style.css" />
-    <link rel="stylesheet" href="/css/order.css" />
-    <link rel="stylesheet" href="/css/footer.css" />
-  </head>
 
-  <body>
-    <%- include("../includes/nav") %> <% if(data.length>0){ %> <%
-    data.forEach(d=>{%>
-    <div class="ordered-items">
-      <h3>ID:<%=d._id %></h3>
-      <%d.items.forEach(product=>{%>
-      <div class="items">
-        <p><%=product.details.title%></p>
-        <p>Qty:<%=product.quantity%></p>
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>
+    <%= pageTitle %>
+  </title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/order.css" />
+  <link rel="stylesheet" href="/css/footer.css" />
+</head>
 
-      <%})%>
-    </div>
-    <%})%> 
-    <h1 class="centered">Total Price:<%=totalPrice%></h1>
-    <%}else{%>
+<body>
+  <%- include("../includes/nav") %>
+    <% if(data.length>0){ %> <% data.forEach(d=>{%>
+        <div class="ordered-items">
+          <h3>ID:<%=d._id %>
+          </h3>
+          <%d.items.forEach(product=>{%>
+            <div class="items">
+              <p>
+                <%=product.details.title%>
+              </p>
+              <p>Qty:<%=product.quantity%>
+              </p>
+            </div>
 
-    <h1>Don't have any orders!</h1>
-    <%}%> <%- include("../includes/footer.ejs") %>
-  </body>
+            <%})%>
+              <button class="btn"><a href="/receipt/<%= d._id %>">Receipt</a></button>
+        </div>
+        <%})%>
+          <h1 class="centered">Total Price:<%=totalPrice%>
+          </h1>
+          <%}else{%>
+
+            <h1>Don't have any orders!</h1>
+            <%}%>
+              <%- include("../includes/footer.ejs") %>
+</body>
+
 </html>
