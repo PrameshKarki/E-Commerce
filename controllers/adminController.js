@@ -102,8 +102,8 @@ module.exports.postEditProduct = (req, res, next) => {
 
 }
 
-module.exports.postDeleteProduct = (req, res, next) => {
-    let ID = req.body.ID;
+module.exports.deleteProduct = (req, res, next) => {
+    let ID = req.params.productId;
     Product.findOne({ _id: ID, userId: req.user._id }).then(product => {
         if (!product) {
             const error = new Error(err);
@@ -115,12 +115,10 @@ module.exports.postDeleteProduct = (req, res, next) => {
                 removeFile(product.imageURL);
                 //Remove from cart too
                 req.user.removeCartProduct(ID).then(() => {
-                    res.redirect("/admin/products");
+                    res.status(200).json({ message: 'success' });
                 })
             }).catch(err => {
-                const error = new Error(err);
-                error.httpStatusCode = 500;
-                return next(error);
+                res.status(500).json({ message: 'error' });
             });
 
         }
