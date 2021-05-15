@@ -8,7 +8,8 @@ const getAddProduct = (req, res, next) => {
         path: "/admin/add-product",
         editMode: false,
         hasError: false,
-        error: []
+        error: [],
+        errMessage: req.flash("err-message"),
 
     });
 };
@@ -32,6 +33,7 @@ module.exports.getEditProduct = (req, res, next) => {
                     hasError: false,
                     error: [],
                     product: product[0], //For single element only
+                    errMessage: req.flash("err-message"),
 
                 })
             }
@@ -138,6 +140,7 @@ const getProducts = (req, res, next) => {
             pageTitle: "Products-webTRON Shop",
             path: "/admin/products",
             products: products,
+            errMessage: req.flash("err-message"),
 
         });
     }).catch(err => {

@@ -36,9 +36,12 @@
                         </div>
                         <% }) %>
                 </section>
-                <% }else{ %>
-                    <h1>No Data!!!</h1>
-                    <% } %>
+                <%- include("../includes/pagination.ejs") %>
+
+
+                    <% }else{ %>
+                        <h1>No Data!!!</h1>
+                        <% } %>
         </main>
         <%- include("../includes/footer.ejs") %>
 </body>

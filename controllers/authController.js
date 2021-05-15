@@ -7,6 +7,7 @@ const { validationResult } = require("express-validator/check");
 
 
 exports.getLogin = (req, res, next) => {
+
     res.render("auth/login", {
         pageTitle: "LogIn-webTRON Shop",
         path: "/login",
@@ -14,8 +15,8 @@ exports.getLogin = (req, res, next) => {
             email: "",
             password: " "
         },
-        errMessage: [],
-        error: []
+        error: [],
+        errMessage: req.flash("err-message"),
     });
 }
 
@@ -34,7 +35,7 @@ exports.postLogin = (req, res, next) => {
                 password: password
             },
             errMessage: errors.array().map(element => element.msg),
-            error:errors.array()
+            error: errors.array()
         })
 
     } else {
@@ -84,8 +85,8 @@ exports.getSignup = (req, res, next) => {
             password: "",
             confirmPassword: ""
         },
-        errMessage: [],
-        error: []
+        error: [],
+        errMessage: req.flash("err-message"),
     })
 }
 
@@ -133,6 +134,7 @@ exports.getForgetPassword = (req, res, next) => {
     res.render("auth/forget-password.ejs", {
         pageTitle: "Reset password-webTRON Shop",
         path: "/forget-password",
+        errMessage: req.flash("err-message"),
     })
 }
 
@@ -175,7 +177,8 @@ exports.getResetPassword = (req, res, next) => {
                 pageTitle: "Reset Password",
                 path: "/reset-password",
                 token: token,
-                _id: user._id
+                _id: user._id,
+                errMessage: req.flash("err-message"),
             })
 
         } else {

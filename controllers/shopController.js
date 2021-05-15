@@ -6,20 +6,37 @@ const Product = require('../models/product');
 const Order = require("../models/order");
 const User = require("../models/user");
 
-const getProducts = (req, res, next) => {
-    Product.find().then((products) => {
-        res.render('shop/product-list', {
-            pageTitle: "Products-webTRON Shop",
-            path: "/products",
-            products: products,
+const PRODUCTS_PER_PAGE = 1;
 
-        });
+const getProducts = (req, res, next) => {
+    const page = +req.query.page || 1;
+    Product.countDocuments().then(totalProducts => {
+        Product.find()
+            .skip((page - 1) * PRODUCTS_PER_PAGE)
+            .limit(PRODUCTS_PER_PAGE)
+            .then(products => {
+                res.render('shop/product-list', {
+                    pageTitle: "Products-webTRON Shop",
+                    path: "/products",
+                    products: products,
+                    hasNextPage: PRODUCTS_PER_PAGE * page < totalProducts,
+                    hasPreviousPage: page > 1,
+                    nextPage: page + 1,
+                    previousPage: page - 1,
+                    lastPage: Math.ceil(totalProducts / PRODUCTS_PER_PAGE),
+                    currentPage: page,
+                    errMessage: req.flash("err-message"),
+                });
+            }).catch(err => {
+                const error = new Error(err);
+                error.httpStatusCode = 500;
+                return next(error);
+            });
     }).catch(err => {
         const error = new Error(err);
-        error.httpStatusCode = 500;
+        error.httpStatusCode = 200;
         return next(error);
-    });
-
+    })
 
 }
 const getProduct = (req, res, next) => {
@@ -29,6 +46,7 @@ const getProduct = (req, res, next) => {
             pageTitle: "Product Title-webTRON Shop",
             path: "/products",
             product: product,
+            errMessage: req.flash("err-message"),
 
         })
     }).catch(err => {
@@ -41,18 +59,36 @@ const getProduct = (req, res, next) => {
 }
 
 const getHome = (req, res, next) => {
-    Product.find().then(products => {
-        res.render('shop/index', {
-            pageTitle: "Welcome to webTRON Shop",
-            path: "/",
-            products: products,
+    const page = +req.query.page || 1;
+    Product.countDocuments().then(totalProducts => {
+        Product.find()
+            .skip((page - 1) * PRODUCTS_PER_PAGE)
+            .limit(PRODUCTS_PER_PAGE)
+            .then(products => {
+                res.render('shop/index', {
+                    pageTitle: "Welcome to webTRON Shop",
+                    path: "/",
+                    products: products,
+                    hasNextPage: PRODUCTS_PER_PAGE * page < totalProducts,
+                    hasPreviousPage: page > 1,
+                    nextPage: page + 1,
+                    previousPage: page - 1,
+                    lastPage: Math.ceil(totalProducts / PRODUCTS_PER_PAGE),
+                    currentPage: page,
+                    errMessage: req.flash("err-message"),
 
-        });
+                });
+            }).catch(err => {
+                const error = new Error(err);
+                error.httpStatusCode = 500;
+                return next(error);
+            });
     }).catch(err => {
         const error = new Error(err);
-        error.httpStatusCode = 500;
+        error.httpStatusCode = 200;
         return next(error);
-    });
+    })
+
 }
 
 const getCart = (req, res, next) => {
@@ -65,6 +101,7 @@ const getCart = (req, res, next) => {
             path: "/cart",
             products: data,
             totalPrice: totalPrice,
+            errMessage: req.flash("err-message"),
 
         })
     }).catch(err => {
@@ -88,6 +125,7 @@ const getOrders = (req, res, next) => {
             path: "/orders",
             data: data,
             totalPrice: totalPrice,
+            errMessage: req.flash("err-message"),
 
         })
     }).catch(err => {

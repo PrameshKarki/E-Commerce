@@ -134,4 +134,27 @@ margin:1rem 0;
     width:20rem;
 }
 
+.pagination-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width:20rem;
+    min-height: 5rem;
+    margin:2rem auto;
+    text-align: center;
+}
+.pagination-container a{
+    text-decoration: none;
+    color:rgb(78, 78, 214);
+    border:0.1rem solid rgb(78, 78, 214);
+    font-size: 2rem;
+    padding:0.5rem 1rem;
+    margin:0 1rem;
+}
+.pagination-container a.active,
+.pagination-container a:hover{
+    background-color: rgb(78, 78, 214);
+    color:white;
+}
+
 

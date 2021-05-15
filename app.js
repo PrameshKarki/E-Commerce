@@ -97,13 +97,6 @@ app.use(flash());
 
 //Set locals for render
 app.use((req, res, next) => {
-
-    let errMessage = req.flash("err-message");
-    if (errMessage.length > 0) {
-        res.locals.errMessage = [errMessage[0]];
-    } else {
-        res.locals.errMessage = [];
-    }
     let role;
     if (req.user) {
         role = req.user.role;
@@ -136,12 +129,15 @@ app.use((err, req, res, next) => {
     res.status(err.httpStatusCode).render("500.ejs", {
         pageTitle: "Server Error-webTRON Shop",
         path: "/500",
-        errMessage:[],
+        errMessage: [],
         isAuthenticated: req.session.isLoggedIn,
     })
 })
 
-mongoose.connect(MONGODB_URI).then(() => {
+mongoose.connect(MONGODB_URI, {
+    useUnifiedTopology: true,
+    useNewUrlParser:true
+}).then(() => {
     app.listen(3000);
 }).catch(err => {
     console.error(err);
