@@ -26,7 +26,7 @@ const fileStorage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-    if (file.mimetype === "image/jpeg") {
+    if (file.mimetype === "image/jpeg" || file.mimetype === "image/png" || file.mimetype === "image/JPG") {
         cb(null, true);
     } else {
         cb(null, false);
@@ -136,7 +136,7 @@ app.use((err, req, res, next) => {
 
 mongoose.connect(MONGODB_URI, {
     useUnifiedTopology: true,
-    useNewUrlParser:true
+    useNewUrlParser: true
 }).then(() => {
     app.listen(3000);
 }).catch(err => {
